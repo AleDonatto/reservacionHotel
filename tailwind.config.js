@@ -1,8 +1,13 @@
 module.exports = {
-  purge: [],
+  //purge: [],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: theme => ({
+        'acapulco': "url('./img/acapulco.jpg')",
+      })
+    },
   },
   variants: {
     extend: {},

@@ -15,6 +15,7 @@ export const FormReservacion = () => {
         nAdultos: 2,
         nNinos: 0,
     })*/
+    
     const [inputValues, setinputValues] = useState({
         paquete: false,
         destino: '',
@@ -141,9 +142,6 @@ export const FormReservacion = () => {
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="">
                                     <label htmlFor="destino" className="block text-gray-700 text-sm font-semibold mb-2">Destino</label>
-                                    {/* <input type="text" name="destino" id="destino" value={destino} onChange={handleInputChanges} 
-                                    className="w-full text-xs pl-3 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" autoComplete="off"/> */}
-
                                     <select name="destino" id="" className="w-full text-xs pl-3 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                                     onChange={handleInputChangeTow} value={destino}>
                                         <option value="">Seleccione</option>
@@ -201,7 +199,7 @@ export const FormReservacion = () => {
                                                     {
                                                         rows.map((row,index) => (
                                                             <RowInputs nAdultos={nAdultos} nNinos={nNinos} numero={index} handleAddPersonas={handleAddPersonas} key={index} />
-                                                        ) )
+                                                        ))
                                                     }
                                                 </div>
                                                 <div className="">

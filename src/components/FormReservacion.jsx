@@ -1,20 +1,11 @@
-import React, { createRef, useState } from 'react'
+import React, { createRef, useContext, useState } from 'react'
 import { createPopper } from '@popperjs/core'
 //import { useForm } from '../hooks/useForm'
 import {RowInputs} from './RowInputs'
+import { useHistory } from 'react-router'
+import { Context } from '../hooks/Context'
 
 export const FormReservacion = () => {
-    
-    /*const [values, handleInputChanges] = useForm({
-        paquete: false,
-        destino: '',
-        fsalida: '',
-        fllegada: '',
-        nHabitaciones: 1,
-        promo:'',
-        nAdultos: 2,
-        nNinos: 0,
-    })*/
     
     const [inputValues, setinputValues] = useState({
         paquete: false,
@@ -29,8 +20,6 @@ export const FormReservacion = () => {
     })
 
     const handleInputChangeTow = (event) => {
-        // console.log(event.target.name)
-        // console.log(event.target.value)
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         const name = event.target.name;
 
@@ -54,17 +43,9 @@ export const FormReservacion = () => {
         setpopperShow(false);
     }
 
-    const { paquete,destino ,nHabitaciones, nAdultos, nNinos, personas} = inputValues
-    
-    /*const handleInputChages = ({target}) => {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+    const history = useHistory();
 
-        setvalues({
-            ...values,
-            [ name ]: value
-        })
-    }*/
+    const { paquete,destino ,nHabitaciones, nAdultos, nNinos, personas} = inputValues
 
     const [rows, setrows] = useState([])
     const [numeroHabitaciones, setstateHabitacion] = useState(0)
@@ -90,10 +71,6 @@ export const FormReservacion = () => {
         setrows(copyRows);
     };
 
-    const handleSubmit = () => {
-        console.log('se envio datos')
-    }
-
     const confirmationHabitacion = () => {
         setinputValues({
             ...inputValues,
@@ -101,6 +78,7 @@ export const FormReservacion = () => {
         })
         closePopover();
     }
+
     const handleAddPersonas = (adultos, menores, index) => {
         const array = [];
         if(personas.length === 0){
@@ -120,18 +98,38 @@ export const FormReservacion = () => {
         }
     }
 
+    const {data, setdata} = useContext(Context)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        
+        setdata({
+            ...data,
+            destino: inputValues.destino,
+            paquete: inputValues.paquete,
+            fsalida: inputValues.fsalida,
+            fllegada: inputValues.fllegada,
+            nHabitaciones: inputValues.nHabitaciones,
+            promo: inputValues.promo,
+            personas: inputValues.personas
+        })
+
+        history.push(`/habitaciones`)
+    }
+
     return (
         <div className="container mx-auto px-4 -mt-32">
             <div className="grid grid-rows-2 grid-flow-col gap-4">
                 <div className="flex justify-center">
                     <p className="text-white text-3xl">Reservar Ahora</p>
+                    <p>{}</p>
                 </div>
                 <div className="flex justify-center">
                     <svg className="animate-bounce w-8 h-8 text-white text-3xl" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"></path></svg>
                 </div>
             </div>
             <div className="shadow shadow-2xl rounded rounded-lg bg-white p-8">
-                <form action="" method="post" target="_blank" onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-4 gap-4">
                         <div className="">
                             <p className="text-lg text-black text-center font-bold mb-5">{ paquete ? 'Paquete' : 'Hotel' }</p>

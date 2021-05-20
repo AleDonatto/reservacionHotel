@@ -1,5 +1,6 @@
 import React from 'react'
 import { Content } from './Content'
+//import { ContextProvider } from './ContextProvider'
 import { FormReservacion } from './FormReservacion'
 import { Navbar } from './Navbar'
 
@@ -18,7 +19,6 @@ export const Home = () => {
             </div>
 
             <FormReservacion />
-
             <Content />
         </div>
     )

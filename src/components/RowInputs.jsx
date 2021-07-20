@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from "react"
 
-export const RowInputs = ({nAdultos, nNinos, numero, handleAddPersonas }) => {
+export const RowInputs = ({nAdultos, nNinos, numero, handleAddPersonas, values, setInput }) => {
     const [adultos, setadultos] = useState(nAdultos)
     const [ninos, setninos] = useState(nNinos)
 
@@ -9,25 +9,48 @@ export const RowInputs = ({nAdultos, nNinos, numero, handleAddPersonas }) => {
         setadultos(
             adultos+1
         )
+
+        setTimeout( () => {
+            handleAddPersonas(adultos, ninos, numero)
+        }, 1000)
+
+        /*const copyArray = values.personas
+        copyArray[numero].adultos = adultos
+        copyArray[numero].ninos = ninos
+
+        setInput({
+            ...values,
+            personas:copyArray
+        })*/
     }
     const resAdulto = () => {
         if(adultos===1){
             return adultos
         }
         setadultos(adultos-1)
+        handleAddPersonas(adultos, ninos, numero)
     }
 
     const addNinos = () => {
         setninos(ninos+1)
+        handleAddPersonas(adultos, ninos, numero)
     }
 
     const resNinos = () => {
         if(ninos===0){
             return ninos
         }
-        setninos(ninos-1)
-
+        setninos(ninos-1) 
+        handleAddPersonas(adultos, ninos, numero)   
     }
+
+    /*useEffect(() => {
+        return () => {
+            const senior = adultos 
+            const morro = ninos
+            handleAddPersonas(adultos, ninos, numero)
+        }
+    }, [adultos | ninos])*/
 
     return (
         <div className="shadow border">
@@ -69,18 +92,15 @@ export const RowInputs = ({nAdultos, nNinos, numero, handleAddPersonas }) => {
                         </div>
                     </div>
                 </div>
-                <div className="p-2 mt-3">
-                    <div className="flex flex-row">
+                {/*<div className="p-2 mt-3">
+                    <div className={ "flex flex-row " + (showbutton ? "": "hidden") }  >
                         <div className="flex justify-center">
-                            <button type="button" className="text-white p-1 rounded-lg bg-green-400 hover:bg-green-500" onClick={() => handleAddPersonas(adultos,ninos,numero) }>
-                                {/*}
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                                */}
-                                Agregar    
+                            <button type="button" className="text-white p-1 rounded-lg bg-green-400 hover:bg-green-500" onClick={agregarPersonas}>
+                                Confirmar    
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>*/}
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { createRef, useContext, useState } from 'react'
+import React, { createRef, useContext, useEffect, useState } from 'react'
 import { createPopper } from '@popperjs/core'
 //import { useForm } from '../hooks/useForm'
 import {RowInputs} from './RowInputs'
@@ -19,6 +19,15 @@ export const FormReservacion = () => {
         personas: []
     })
 
+    const [popperShow, setpopperShow] = useState(false);
+    const btnRef = createRef();
+    const popoverRef = createRef();
+    const history = useHistory();
+    const { paquete,destino ,nHabitaciones, nAdultos, nNinos, personas} = inputValues
+    const [rows, setrows] = useState([])
+    const [numeroHabitaciones, setstateHabitacion] = useState(0)    
+    const {data, setdata} = useContext(Context)
+
     const handleInputChangeTow = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         const name = event.target.name;
@@ -28,11 +37,6 @@ export const FormReservacion = () => {
             [name] : value
         })
     }
-    
-    const [popperShow, setpopperShow] = useState(false);
-    const btnRef = createRef();
-    const popoverRef = createRef();
-
     const openPopover = () => {
         createPopper(btnRef.current, popoverRef.current, {
             placement: "bottom"
@@ -41,55 +45,23 @@ export const FormReservacion = () => {
     }
     const closePopover = () => {
         setpopperShow(false);
-    }
-
-    const history = useHistory();
-
-    const { paquete,destino ,nHabitaciones, nAdultos, nNinos, personas} = inputValues
-
-    const [rows, setrows] = useState([])
-    const [numeroHabitaciones, setstateHabitacion] = useState(0)
-    
+    }    
     const addHabitacion = () => {
         setstateHabitacion(
             numeroHabitaciones+1
         )
         setrows(rows.concat({nAdultos, nNinos}) )
-    }
 
-    const resHabitacion = () => {
-        if(numeroHabitaciones === 1){
-            return numeroHabitaciones;
-        }
-        setstateHabitacion(numeroHabitaciones-1)
-        handleOnRemove()
-    }
-
-    const handleOnRemove = index => {
-        const copyRows = [...rows];
-        copyRows.splice(index, 1);
-        setrows(copyRows);
-    };
-
-    const confirmationHabitacion = () => {
-        setinputValues({
-            ...inputValues,
-            nHabitaciones: numeroHabitaciones
-        })
-        closePopover();
-    }
-
-    const handleAddPersonas = (adultos, menores, index) => {
         const array = [];
         if(personas.length === 0){
-            array.push({adultos,menores})
+            array.push({ adultos:2 , ninos:0})
         
             setinputValues({
                 ...inputValues,
                 personas: array
             })
         }else {
-            array.push(...personas, {adultos,menores})
+            array.push(...personas, { adultos:2 , ninos:0})
         
             setinputValues({
                 ...inputValues,
@@ -97,9 +69,41 @@ export const FormReservacion = () => {
             })
         }
     }
+    const resHabitacion = () => {
+        if(numeroHabitaciones === 1){
+            return numeroHabitaciones;
+        }
 
-    const {data, setdata} = useContext(Context)
+        setstateHabitacion(numeroHabitaciones-1)
+        handleOnRemove() 
 
+        const copyArray = [...inputValues.personas]
+        copyArray.splice(copyArray.length-1, 1)
+        setinputValues({
+            ...inputValues,
+            personas: copyArray
+        })
+
+    }
+    const handleOnRemove = index => {
+        const copyRows = [...rows];
+        copyRows.splice(index, 1);
+        setrows(copyRows);
+    };
+    const confirmationHabitacion = () => {
+        closePopover();
+    }
+    const changePersonRoom = (adultos, menores, index) => {
+
+        const copyArray = inputValues.personas
+        copyArray[index].adultos = adultos
+        copyArray[index].ninos = menores
+
+        setinputValues({
+            ...inputValues,
+            personas: copyArray
+        })
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         
@@ -116,6 +120,23 @@ export const FormReservacion = () => {
 
         history.push(`/habitaciones`)
     }
+
+    useEffect(() => {
+        setinputValues({
+            ...inputValues,
+            nHabitaciones: numeroHabitaciones
+        })
+    }, [numeroHabitaciones])
+
+    /*useCallback(
+        () => {
+            setinputValues({
+                ...inputValues,
+                nHabitaciones: numeroHabitaciones
+            })
+        },
+        [numeroHabitaciones],
+    )*/
 
     return (
         <div className="container mx-auto px-4 -mt-32">
@@ -196,12 +217,20 @@ export const FormReservacion = () => {
                                                 <div className="grid grid-cols-1 grap-4">
                                                     {
                                                         rows.map((row,index) => (
-                                                            <RowInputs nAdultos={nAdultos} nNinos={nNinos} numero={index} handleAddPersonas={handleAddPersonas} key={index} />
+                                                            <RowInputs 
+                                                                nAdultos={nAdultos} 
+                                                                nNinos={nNinos} 
+                                                                numero={index} 
+                                                                handleAddPersonas={changePersonRoom} 
+                                                                key={index} 
+                                                                values={inputValues}
+                                                                setInpunt={setinputValues}
+                                                            />
                                                         ))
                                                     }
                                                 </div>
                                                 <div className="">
-                                                    <button type="button" className="mt-2 p-2 w-full bg-blue-900 text-white hover:bg-opacity-75" onClick={confirmationHabitacion}>Confirmar</button>
+                                                    <button type="button" className="mt-2 p-2 w-full bg-blue-900 text-white hover:bg-opacity-75" onClick={confirmationHabitacion}>Listo</button>
                                                 </div>
                                             </div>
                                         </div>

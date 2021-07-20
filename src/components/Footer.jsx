@@ -3,7 +3,7 @@ import React from 'react'
 export const Footer = () => {
     return (
         <div>
-            <script src="https://kit.fontawesome.com/4db6b32bd3.js" crossorigin="anonymous"></script>
+            <script src="https://kit.fontawesome.com/4db6b32bd3.js" crossOrigin="anonymous"></script>
             <div className="w-full bg-purple-500 text-white mt-5">
                 <div className="xl:px-40 pb-12 lg:px-20 md:px-10 sm:px-5 px-10">
                     <div className="w-full pt-12 flex flex-col sm:flex-row space-y-2  justify-start">
@@ -19,20 +19,20 @@ export const Footer = () => {
                             <p className="opacity-60">Concord Royal Court (3rd floor)
                                 Dhanmondi, Dhaka 1209, Bangladesh.</p>             
                         </div>
-                        <div class="w-full sm:w-1/5 flex flex-col space-y-4">
+                        <div className="w-full sm:w-1/5 flex flex-col space-y-4">
                             <p className="opacity-60">About Us</p>
                             <p className="opacity-60">Responsibilities</p>
                             <p className="opacity-60">Out Services</p>
                             <p className="opacity-60">Contact</p>
                         </div>
-                        <div class="w-full sm:w-1/5 flex flex-col space-y-4">
+                        <div className="w-full sm:w-1/5 flex flex-col space-y-4">
                             <p className="opacity-60">Disclaimer</p>
                             <p className="opacity-60">Testimonials</p>
                             <p className="opacity-60">Privacy Policy</p>
                             <p className="opacity-60">Terms of Service</p>
                         </div>
-                        <div class="w-full sm:w-1/5 pt-6 flex items-end mb-1">
-                            <div class="flex flex-row space-x-4">
+                        <div className="w-full sm:w-1/5 pt-6 flex items-end mb-1">
+                            <div className="flex flex-row space-x-4">
                                 <i className="fab fa-facebook-f"></i>
                                 <i className="fab fa-twitter"></i>
                                 <i className="fab fa-instagram"></i>
